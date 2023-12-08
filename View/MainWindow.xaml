@@ -1,0 +1,131 @@
+﻿<Window x:Class="TicTacToeWPF_MVVM.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TicTacToeWPF_MVVM"
+        xmlns:vm="clr-namespace:TicTacToeWPF_MVVM.ViewModel"
+        mc:Ignorable="d"
+        FontSize="18"
+        FontFamily="SegoeUILight"
+        Title="TicTacToe With MVVM" Height="450" Width="800">
+
+    <Window.DataContext>
+        <vm:MainViewModel x:Name="vm"/>
+    </Window.DataContext>
+    
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="20" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="1" Grid.Column="1">Добро пожаловать в крестики-нолики</TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="1" Margin="0 180 0 0">Укажите имена игроков:</TextBlock>
+        
+        <TextBox Grid.Row="2" Grid.Column="1" Margin="10 15 10 15" 
+                 x:Name="Player1Name"
+                 Text="{Binding Path=PlayerName1,
+                 UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+
+        <TextBox Grid.Row="3" Grid.Column="1" Margin="10 15 10 15"  
+                 x:Name="Player2Name"
+                 Text="{Binding Path=PlayerName2,
+                 UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+        
+        <Button Grid.Row="4" Grid.Column="1" Margin="5 20 5 20" 
+                x:Name="PlayButton"
+                Command="{Binding Start}">Начните новую игру</Button>
+
+        <StackPanel Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="1" Grid.RowSpan="3" Margin="130 0 130 0">
+            <DockPanel>
+                <Button Width="100" Height="100"
+                        x:Name="TopLeftButton"
+                        Command="{Binding OnClick}"
+                        CommandParameter="0"
+                        Content="{Binding Table[0],
+                        UpdateSourceTrigger=PropertyChanged}"></Button>
+                
+                <Button Width="100" Height="100"
+                        x:Name="TopMiddleButton"
+                        Command="{Binding OnClick}"
+                        CommandParameter="1"
+                        Content="{Binding Table[1],
+                        UpdateSourceTrigger=PropertyChanged}"></Button>
+                
+                <Button Width="100" Height="100"
+                        x:Name="TopRightButton"
+                        Command="{Binding Path=OnClick}"
+                        CommandParameter="2"
+                        Content="{Binding Path=Table[2],
+                        UpdateSourceTrigger=PropertyChanged}"></Button>
+            </DockPanel>
+            
+            <DockPanel>
+                <Button Width="100" Height="100"
+                        x:Name="MiddleLeftButton"
+                        Command="{Binding OnClick}"
+                        CommandParameter="3"
+                        Content="{Binding Table[3],
+                        UpdateSourceTrigger=PropertyChanged}"></Button>
+                
+                <Button Width="100" Height="100"
+                        x:Name="MiddleMiddleButton"
+                        Command="{Binding OnClick}"
+                        CommandParameter="4"
+                        Content="{Binding Table[4],
+                        UpdateSourceTrigger=PropertyChanged}"></Button>
+                
+                <Button Width="100" Height="100"
+                        x:Name="MiddleRightButton"
+                        Command="{Binding OnClick}"
+                        CommandParameter="5"
+                        Content="{Binding Table[5],
+                        UpdateSourceTrigger=PropertyChanged}"></Button>
+            </DockPanel>
+
+            <DockPanel>
+                <Button Width="100" Height="100"
+                        x:Name="LowLeftButton"
+                        Command="{Binding OnClick}"
+                        CommandParameter="6"
+                        Content="{Binding Table[6],
+                        UpdateSourceTrigger=PropertyChanged}"></Button>
+                
+                <Button Width="100" Height="100"
+                        x:Name="LowMiddleButton"
+                        Command="{Binding OnClick}"
+                        CommandParameter="7"
+                        Content="{Binding Table[7],
+                        UpdateSourceTrigger=PropertyChanged}"></Button>
+                
+                <Button Width="100" Height="100"
+                        x:Name="LowRightButton"
+                        Command="{Binding OnClick}"
+                        CommandParameter="8"
+                        Content="{Binding Table[8],
+                        UpdateSourceTrigger=PropertyChanged}"></Button>
+            </DockPanel>
+            <Label x:Name="RoundLabel"
+                   Content="{Binding WhoseRound}"></Label>
+        </StackPanel>
+        
+    </Grid>
+</Window>
