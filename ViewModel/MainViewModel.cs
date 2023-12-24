@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using TicTacToeWPF_MVVM.Model;
@@ -15,21 +16,67 @@ namespace TicTacToeWPF_MVVM.ViewModel
     {
         // инициализация игрового объекта
         private Game _ngame;
-
         // вспомогательный флаг для сброса состояния
         private bool _gameInProgress = false;
 
         // создание массива пустых строк
         // 1x9
         public string[] _table = new string[] { "", "", "", "", "", "", "", "", "" };
+        
 
+        public int XCount
+        {
+            get 
+            {
+                if(_ngame == null)
+                {
+                    return 0;
+                }
+                return _ngame.XCount; 
+            }
+            set
+            {
+                if (_ngame.XCount != value)
+
+                {
+                    _ngame.XCount = value;
+                    RaisePropertyChanged(nameof(XCount));
+                }
+            }
+        }
+
+        public int YCount
+        {
+            get 
+            {
+                if (_ngame == null)
+                {
+                    return 0;
+                }
+                return _ngame.YCount; 
+            }
+            set
+            {
+                if (_ngame.YCount != value)
+                {
+                    _ngame.YCount = value;
+                    RaisePropertyChanged(nameof(YCount));
+                }
+            }
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         public string[] Table
         {
             get { return _table; }
             set
             {
                 _table = value;
-                onPropertyChange(nameof(Table));
+                OnPropertyChange(nameof(Table));
             }
         }
 
@@ -45,7 +92,7 @@ namespace TicTacToeWPF_MVVM.ViewModel
             set
             {
                 _whoseRound = value;
-                onPropertyChange(nameof(WhoseRound));
+                OnPropertyChange(nameof(WhoseRound));
             }
         }
 
@@ -63,7 +110,7 @@ namespace TicTacToeWPF_MVVM.ViewModel
             set
             {
                 _playerName1 = value;
-                onPropertyChange(nameof(PlayerName1));
+                OnPropertyChange(nameof(PlayerName1));
             }
         }
 
@@ -76,7 +123,7 @@ namespace TicTacToeWPF_MVVM.ViewModel
             set
             {
                 _playerName2 = value;
-                onPropertyChange(nameof(PlayerName2));
+                OnPropertyChange(nameof(PlayerName2));
             }
         }
 
@@ -171,5 +218,21 @@ namespace TicTacToeWPF_MVVM.ViewModel
             // если оба они не пусты и игра не запущена, то вы можете нажать кнопку
             return (textBoxEmpty && !_gameInProgress);
         }
+
+        protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string propertyName = null)
+        {
+            if (!Equals(field, newValue))
+            {
+                field = newValue;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                return true;
+            }
+
+            return false;
+        }
+
+        private object game;
+
+        public object Game { get => game; set => SetProperty(ref game, value); }
     }
 }

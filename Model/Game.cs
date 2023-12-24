@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,12 +10,45 @@ namespace TicTacToeWPF_MVVM.Model
 {
     public class Game
     {
+        public int xCount = 0;
+        public int yCount = 0;
         public List<Player> Players { get; set; } = new List<Player>();
         public string CurrentMark { get; set; }
         private List<string> MarksToAssign { get; set; } = new List<string>();
         public string Winner { get; set; }
         public bool IsFinished { get; set; }
 
+        public int XCount
+        {
+            get { return xCount; }
+            set
+            {
+                if (xCount != value)
+                {
+                    xCount = value;
+                    OnPropertyChanged(nameof(XCount));
+                }
+            }
+        }
+
+        public int YCount
+        {
+            get { return yCount; }
+            set
+            {
+                if (yCount != value)
+                {
+                    yCount = value;
+                    OnPropertyChanged(nameof(YCount));
+                }
+            }
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         public Game(Player p1, Player p2)
         {
             // установка значений по умолчанию
@@ -57,6 +91,7 @@ namespace TicTacToeWPF_MVVM.Model
         {
             player.IsTurn = !player.IsTurn;      
         }
+        
 
         // способ управления игрой, переключения игрока, проверки выигрыша и т.д.
         public void ChangeTurns(string[] field)
@@ -67,6 +102,15 @@ namespace TicTacToeWPF_MVVM.Model
                 {
                     var winner = Players.FirstOrDefault(x => x.IsWinner == true);
                     MessageBox.Show($"Выиграл игрок {winner.Name}, он играл {winner.Mark}");
+                    if(winner.Mark == "X")
+                    {
+                        xCount++;
+                    }
+
+                    if (winner.Mark == "O")
+                    {
+                        yCount++;
+                    }
                     IsFinished = true;
                     break;
                 }
